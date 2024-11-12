@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* Base styling */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #ffffff;
+      min-height: 100vh;
+      text-align: center;
+    }
+    .navbar {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    .navbar a {
+      color: #ffffff;
+      font-weight: 500;
+      text-decoration: none;
+      font-size: 1.2em;
+    }
+    .search-city {
+      padding: 10px 20px;
+      border-radius: 25px;
+      border: none;
+      width: 300px;
+      font-size: 1em;
+    }
+    .location-name {
+      font-size: 2.6em;
+      font-weight: 600;
+      margin: 20px 0;
+    }
+    .temperature-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      font-size: 2.5em;
+    }
+    .temperature-icon img {
+      width: 90px;
+    }
+    .temperature-value {
+      font-size: 3.5em;
+      font-weight: bold;
+    }
+    .weather-type {
+      font-size: 1.5em;
+      margin-top: 10px;
+      font-weight: 400;
+    }
+    .additionals-container {
+      display: grid;
+      gap: 15px;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      margin: 20px;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+    }
+    .additional-item {
+      font-size: 1em;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+    .daily-forecast-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      padding: 20px 10px;
+      scrollbar-width: thin;
+    }
+    .daily-forecast-card {
+      flex: 0 0 auto;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 15px;
+      width: 110px;
+      border-radius: 10px;
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      font-size: 0.9em;
+      color: #ffffff;
+    }
+    .daily-forecast-date {
+      font-size: 1em;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .daily-forecast-logo img {
+      width: 40px;
+      margin-bottom: 5px;
+    }
+    .max-min-temperature-daily-forecast {
+      font-size: 1.1em;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    /* Responsive adjustments for smaller screens */
+    @media (max-width: 600px) {
+      .temperature-container {
+        font-size: 2em;
+      }
+      .temperature-icon img {
+        width: 60px;
+      }
+      .additionals-container {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      }
+      .daily-forecast-card {
+        width: 90px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="#">Forecast</a>
+    <a href="#">Refresh</a>
+    <input spellcheck="false" class="search-city" id="searchCity" type="text" autocomplete="off" placeholder="🔍︎ Search City">
+  </nav>
+  
+  <h1 class="location-name" id="locationName">San Francisco, CA</h1>
+  
+  <div class="temperature-container">
+    <div class="temperature-icon"><img src="icons/sunny.png" alt="Weather Icon"></div>
+    <div class="temperature-value" id="temperatureValue">20°C</div>
+  </div>
+  <h2 class="weather-type" id="weatherType">Sunny</h2>
+  
+  <div class="additionals-container">
+    <div class="additional-item"><strong>Air Quality:</strong> <span id="airQuality">Good</span></div>
+    <div class="additional-item"><strong>Real Feel:</strong> <span id="realFeelAdditionalValue">21°C</span></div>
+    <div class="additional-item"><strong>Humidity:</strong> <span id="humidityAdditionalValue">78%</span></div>
+    <div class="additional-item"><strong>High:</strong> <span id="maxTemperatureAdditionalValue">22°C</span></div>
+    <div class="additional-item"><strong>Low:</strong> <span id="minTemperatureAdditionalValue">15°C</span></div>
+    <div class="additional-item"><strong>Wind Speed:</strong> <span id="windSpeedAdditionalValue">5 km/h</span></div>
+    <div class="additional-item"><strong>Direction:</strong> <span id="windDirectionAdditionalValue">NE</span></div>
+    <div class="additional-item"><strong>Visibility:</strong> <span id="visibilityAdditionalValue">10 km</span></div>
+    <div class="additional-item"><strong>Pressure:</strong> <span id="pressureAdditionalValue">1012 hPa</span></div>
+    <div class="additional-item"><strong>Sunrise:</strong> <span id="sunriseAdditionalValue">6:45 AM</span></div>
+    <div class="additional-item"><strong>Sunset:</strong> <span id="sunsetAdditionalValue">5:30 PM</span></div>
+  </div>
+  
+  <div class="daily-forecast-container">
+    <div class="daily-forecast-card">
+      <p class="daily-forecast-date">Mon</p>
+      <div class="daily-forecast-logo"><img src="icons/sunny.png" alt="Sunny Icon"></div>
+      <div class="max-min-temperature-daily-forecast">
+        <span>24°C</span> / <span>16°C</span>
+      </div>
+      <p>Sunny</p>
+    </div>
+    <!-- Additional forecast cards can be added here -->
+  </div>
+  
+  <script src="scripts/script.js"></script>
+  <script src="scripts/mobile.js"></script>
+</body>
+</html>
